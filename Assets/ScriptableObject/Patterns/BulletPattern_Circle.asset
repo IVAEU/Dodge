@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: BulletPattern_Circle
   m_EditorClassIdentifier: 
   offsetDegree: 0
-  distance: 17
+  distance: 15
   bulletAmount: 4

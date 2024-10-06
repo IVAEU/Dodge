@@ -5,14 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BulletPattern/Circle")]
 public class CirclePattern : BulletPattern
 {
-    public override bool isTrackingPlayer { get; set; } = false;
-    public override Vector2 shootDirection { get; set; }
-
     [Tooltip("Default set to Zero(right)")]
     [SerializeField] protected float offsetDegree = 0;
     [SerializeField] protected float distance = 0;
     [SerializeField] protected int bulletAmount = 0;
-    
+
+    public override bool IsTrackingPlayer()
+    {
+        return true;
+    }
+
+    public override Vector2 ShootDirection()
+    {
+        return Vector2.zero;
+    }
+
     public override List<Vector2> GetPatternInfo()
     {
         List<Vector2> bulletPos = new List<Vector2>();

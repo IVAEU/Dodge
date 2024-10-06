@@ -4,28 +4,38 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    private HealthInfo _playerHealth;
+    private int _playerMaxHealth;
+    private int _playerCurHealth;
     
-    public void Init()
+    public void Init(int cur, int max)
     {
-        RefreshInfo();
-        PlayerController.Instance.OnHealthChanged += RefreshInfo;
-    }
-
-    public void HealHealth(float heal)
-    {
-        _playerHealth.HealHealth(heal);
-        PlayerController.Instance.HealthData = _playerHealth;
+        RefreshMaxHealthInfo(max);
+        RefreshCurHealthInfo(cur);
+        PlayerController.Instance.maxHealth.OnChanged += RefreshMaxHealthInfo;
+        PlayerController.Instance.curHealth.OnChanged += RefreshCurHealthInfo;
     }
     
-    public void TakeDamage(float damage)
+    private void RefreshMaxHealthInfo(int newMax)
     {
-        _playerHealth.DamageHealth(damage);
-        PlayerController.Instance.HealthData = _playerHealth;
+        _playerMaxHealth = newMax;
+    }
+    
+    private void RefreshCurHealthInfo(int newCur)
+    {
+        _playerCurHealth = newCur;
     }
 
-    private void RefreshInfo()
+    public void HealHealth(int heal)
     {
-        _playerHealth = PlayerController.Instance.HealthData;
+        PlayerController.Instance.curHealth.SetValue(_playerCurHealth + heal < _playerMaxHealth 
+            ? _playerCurHealth + heal 
+            : _playerMaxHealth);
+    }
+    
+    public void TakeDamage(int damage)
+    {
+        PlayerController.Instance.curHealth.SetValue(_playerCurHealth > damage 
+            ? _playerCurHealth - damage
+            : 0);
     }
 }

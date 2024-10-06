@@ -31,13 +31,13 @@ public class BulletPatternExecutor : MonoBehaviour
         foreach (Vector2 p in pattern)
         {
             Vector2 dir;
-            if (patterns[index].isTrackingPlayer)
+            if (patterns[index].IsTrackingPlayer())
             {
                 dir = _bulletController.GetPlayerDir(p);
             }
             else
             {
-                dir = patterns[index].shootDirection;
+                dir = patterns[index].ShootDirection();
             }
             _bulletSpawner.SpawnBullet(p, dir, _bulletController.bulletSpeed);
         }

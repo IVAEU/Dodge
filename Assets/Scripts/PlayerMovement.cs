@@ -4,11 +4,11 @@ public class PlayerMovement : BaseMovement
 {
     private float _speed;
     
-    public override void Init()
+    public override void Init(float spd)
     {
-        base.Init();
-        RefreshInfo();
-        PlayerController.Instance.OnSpeedChanged += RefreshInfo;
+        base.Init(spd);
+        RefreshInfo(spd);
+        PlayerController.Instance.speed.OnChanged += RefreshInfo;
     }
 
     public override void MoveByDir(Vector2 dir)
@@ -18,8 +18,8 @@ public class PlayerMovement : BaseMovement
         rb.velocity = dir * _speed;
     }
     
-    private void RefreshInfo()
+    private void RefreshInfo(float newSpeed)
     {
-        _speed = PlayerController.Instance.Speed;
+        _speed = newSpeed;
     }
 }

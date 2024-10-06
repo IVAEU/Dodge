@@ -5,7 +5,7 @@ public abstract class BaseMovement : MonoBehaviour
     [SerializeField] protected Rigidbody2D rb;
     protected bool IsRbExist = false;
 
-    public virtual void Init()
+    public virtual void Init(float spd)
     {
         rb = GetComponent<Rigidbody2D>();
         IsRbExist = rb != null;

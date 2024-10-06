@@ -5,10 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "BulletPattern/Straight")]
 public class StraightPattern : BulletPattern
 {
-    public override bool isTrackingPlayer { get; set; } = true;
-    public override Vector2 shootDirection { get; set; }
-    
-    enum ShootDirection
+    enum ShootDir
     {
         Right,
         Left,
@@ -27,32 +24,40 @@ public class StraightPattern : BulletPattern
     }
 
     [SerializeField] private Vector2 spawnPosition;
-    [SerializeField] private ShootDirection shootDir;
+    [SerializeField] private ShootDir shootDir;
     [SerializeField] private ExpendDirection expendDir;
     [SerializeField] private float expendDistance;
     [SerializeField] private int bulletAmount = 1;
-    
+
+    public override bool IsTrackingPlayer()
+    {
+        return false;
+    }
+
+    public override Vector2 ShootDirection()
+    {
+        switch (shootDir)
+        {
+            case ShootDir.Right:
+                return Vector2.right;
+            case ShootDir.Left:
+                return Vector2.left;
+            case ShootDir.Up:
+                return Vector2.up;
+            case ShootDir.Down:
+                return Vector2.down;
+        }
+
+        return Vector2.zero;
+    }
+
     public override List<Vector2> GetPatternInfo()
     {
         List<Vector2> bulletPos = new List<Vector2>();
         for(int i = 0; i < bulletAmount; i++)
         {
             Vector2 spawnPos = Vector2.zero;
-            switch (shootDir)
-            {
-                case ShootDirection.Right:
-                    shootDirection = Vector2.right;
-                    break;
-                case ShootDirection.Left:
-                    shootDirection = Vector2.left;
-                    break;
-                case ShootDirection.Up:
-                    shootDirection = Vector2.up;
-                    break;
-                case ShootDirection.Down:
-                    shootDirection = Vector2.down;
-                    break;
-            }
+            
             switch (expendDir)
             {
                 case ExpendDirection.Horizontal:

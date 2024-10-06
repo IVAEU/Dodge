@@ -12,29 +12,9 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _playerInput;
     private BaseMovement _playerMovement;
     
-    [SerializeField] private HealthInfo healthData;
-    public Action OnHealthChanged;
-    public HealthInfo HealthData
-    {
-        get => healthData;
-        set 
-        {
-            healthData = value;
-            OnHealthChanged?.Invoke();
-        }
-    }
-    
-    [SerializeField] private float speed;
-    public Action OnSpeedChanged;
-    public float Speed
-    {
-        get => speed;
-        set 
-        {
-            speed = value;
-            OnSpeedChanged?.Invoke();
-        }
-    }
+    public Subscribable<int> maxHealth;
+    public Subscribable<int> curHealth;
+    public Subscribable<float> speed;
 
     private void Awake()
     {
@@ -49,7 +29,7 @@ public class PlayerController : MonoBehaviour
         
         _playerHealth = GetComponent<PlayerHealth>();
         AddNullCheckList(_playerHealth, _playerHealth != null);
-        if (_playerHealth != null) _playerHealth.Init(); 
+        if (_playerHealth != null) _playerHealth.Init(curHealth.GetValue(), maxHealth.GetValue()); 
         
         _playerInput = GetComponent<PlayerInput>();
         AddNullCheckList(_playerInput, _playerInput != null);
@@ -57,7 +37,7 @@ public class PlayerController : MonoBehaviour
         
         _playerMovement = GetComponent<BaseMovement>();
         AddNullCheckList(_playerMovement, _playerMovement != null);
-        if (_playerMovement != null) _playerMovement.Init(); 
+        if (_playerMovement != null) _playerMovement.Init(speed.GetValue()); 
     }
 
     private void AddNullCheckList(System.Object obj, bool isNotNull)
@@ -70,19 +50,17 @@ public class PlayerController : MonoBehaviour
         return _nullCheck[obj.GetType().ToString()];
     }
     
-    public void HealHealth(float heal)
+    public void HealHealth(int heal)
     {
         if(!CheckNull(_playerHealth)) return;
         
         _playerHealth.HealHealth(heal);
-        OnHealthChanged?.Invoke();
     }
     
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         if(!CheckNull(_playerHealth)) return;
         
         _playerHealth.TakeDamage(damage);
-        OnHealthChanged?.Invoke();
     }
 }
