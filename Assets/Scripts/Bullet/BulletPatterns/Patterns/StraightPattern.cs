@@ -84,7 +84,7 @@ public class StraightPattern : BulletPattern
                     else
                     {//Odd
                         spawnPos = 
-                            (spawnPosition + Vector2.down * (expendDistance * bulletAmount / 2)) 
+                            (spawnPosition + Vector2.down * (expendDistance * (bulletAmount / 2))) 
                             + Vector2.up * (expendDistance * i);
                     }
                     break;
